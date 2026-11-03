@@ -17,6 +17,7 @@ import {
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { schemaResolver, useForm } from '@mantine/form';
+import { sampleAssessment } from './fixtures';
 import { mobilityOptions } from './mobilityOptions';
 import { type Assessment, assessmentSchema } from './schema';
 
@@ -57,6 +58,12 @@ export function AssessmentForm({ onSave = defaultOnSave }: AssessmentFormProps) 
   });
 
   const today = dayjs().format('YYYY-MM-DD');
+
+  const handleLoadSample = () => {
+    setSavedAssessment(null);
+    form.setValues(sampleAssessment);
+    form.clearErrors();
+  };
 
   const handleSubmit = form.onSubmit(async (values) => {
     setSavedAssessment(null);
@@ -136,6 +143,9 @@ export function AssessmentForm({ onSave = defaultOnSave }: AssessmentFormProps) 
             </Input.Wrapper>
 
             <Group justify="flex-end" mt="md">
+              <Button type="button" variant="default" onClick={handleLoadSample}>
+                Load sample patient
+              </Button>
               <Button type="submit" loading={isSaving} disabled={isSaving}>
                 Save assessment
               </Button>
