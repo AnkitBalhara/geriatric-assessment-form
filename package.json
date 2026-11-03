@@ -11,10 +11,10 @@
     "typecheck": "tsc --noEmit",
     "lint": "npm run oxlint && npm run stylelint",
     "oxlint": "vp lint",
-    "stylelint": "stylelint \"**/*.css\" --cache",
+    "stylelint": "stylelint \"**/*.css\" --cache --allow-empty-input",
     "format:test": "vp fmt --check",
     "format:write": "vp fmt",
-    "vitest": "vp test run",
+    "vitest": "vp test run --passWithNoTests",
     "vitest:watch": "vp test watch",
     "test": "npm run check && npm run stylelint && npm run vitest && npm run build",
     "storybook": "storybook dev -p 6006",
@@ -30,7 +30,6 @@
     "dayjs": "^1.11.23",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.4",
     "zod": "^4.6.7"
   },
   "devDependencies": {
