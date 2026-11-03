@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import {
+  Alert,
   Button,
   Checkbox,
+  Code,
   Container,
   Group,
   Input,
@@ -34,11 +37,18 @@ export const initialValues: AssessmentFormValues = {
   consentObtained: false,
 };
 
+const defaultOnSave = async (_values: Assessment): Promise<void> => {
+  await new Promise((resolve) => setTimeout(resolve, 800));
+};
+
 export interface AssessmentFormProps {
   onSave?: (values: Assessment) => Promise<void> | void;
 }
 
-export function AssessmentForm({ onSave }: AssessmentFormProps) {
+export function AssessmentForm({ onSave = defaultOnSave }: AssessmentFormProps) {
+  const [isSaving, setIsSaving] = useState(false);
+  const [savedAssessment, setSavedAssessment] = useState<Assessment | null>(null);
+
   const form = useForm<AssessmentFormValues, Assessment>({
     initialValues,
     validate: schemaResolver(assessmentSchema),
@@ -49,7 +59,14 @@ export function AssessmentForm({ onSave }: AssessmentFormProps) {
   const today = dayjs().format('YYYY-MM-DD');
 
   const handleSubmit = form.onSubmit(async (values) => {
-    await onSave?.(values);
+    setSavedAssessment(null);
+    setIsSaving(true);
+    try {
+      await onSave(values);
+      setSavedAssessment(values);
+    } finally {
+      setIsSaving(false);
+    }
   });
 
   return (
@@ -119,10 +136,18 @@ export function AssessmentForm({ onSave }: AssessmentFormProps) {
             </Input.Wrapper>
 
             <Group justify="flex-end" mt="md">
-              <Button type="submit">Save assessment</Button>
+              <Button type="submit" loading={isSaving} disabled={isSaving}>
+                Save assessment
+              </Button>
             </Group>
           </Stack>
         </form>
+
+        {savedAssessment && (
+          <Alert color="green" title="Assessment saved" mt="lg">
+            <Code block>{JSON.stringify(savedAssessment, null, 2)}</Code>
+          </Alert>
+        )}
       </Paper>
     </Container>
   );
