@@ -4,7 +4,7 @@ A single-page Geriatric Care Assessment form application built with React 19, Ma
 
 ## Live Demo
 
-- **Live URL**: [LIVE_URL_PLACEHOLDER]
+- **Live URL**: https://stalwart-melba-d63973.netlify.app
 
 ## Getting Started
 
